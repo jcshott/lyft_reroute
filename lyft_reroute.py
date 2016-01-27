@@ -40,17 +40,41 @@ def setup_dictionary(a, b, c, d):
 	
 	return distance_dict
 
-# testing home to antonia's and personalis to tacolicious
 
-setup_dictionary("37.4770169, -122.237806", "37.416566 -122.122387", "37.4759487, -122.1458561", "37.4433459, -122.1611703")
 
-def find_smallest_reroute(A, B, C, D):
-	"""calculate the shortest reroute distance for drivers starting at points A & C, travelling to B & D if one were to pick up/drop off the other
+def find_shorter_reroute(A, B, C, D):
+	"""calculate the shortest reroute distance for 2 drivers starting at points A & C, travelling to B & D (respectively) if one were to pick up/drop off the other
+
+	shortest of:
+	driver 1 re-route: AB - (AC, CD, DB)
+	driver 2 re-route: CD - (CA, AB, BD)
+	
 	"""
-
 	# get our dictionary of distances between the 4 points
 	distance_dict = setup_dictionary(A, B, C, D)
 
+	a_pickup_c = (distance_dict["ac"]["distance"] + distance_dict["cd"]["distance"] + distance_dict["db"]["distance"]) - distance_dict["ab"]["distance"]
+	print a_pickup_c
+	c_pickup_a = (distance_dict["ca"]["distance"] + distance_dict["ab"]["distance"] + distance_dict["bd"]["distance"]) - distance_dict["cd"]["distance"] 
+	print c_pickup_a
+
+	if a_pickup_c == c_pickup_a:
+		return "It's the same distance for both re-routes!"
+	elif a_pickup_c < c_pickup_a:
+		return "The distance for driver 1 to re-route is shortest with a distance of %d meters" % (a_pickup_c)
+	elif c_pickup_a < a_pickup_c:
+		return "The distance for driver 2 to re-route is shortest with a distance of %d meters" % (c_pickup_a)
+
+
+def main():
+	"""parse command line arguments to get users lat/lon combinations"""
+	# parse with argparse
+
+	# testing home to antonia's and personalis to tacolicious
+	return find_shorter_reroute("37.4770169, -122.237806", "37.416566 -122.122387", "37.4759487, -122.1458561", "37.4433459, -122.1611703")
+
+if __name__ == '__main__':
+	print main()
 
 """
 calculate from A to B, A to C, C to D, D to B, C to A, B to D
