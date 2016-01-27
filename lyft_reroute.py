@@ -1,6 +1,4 @@
-import requests, os
-
-# arg parse! need lat, lon for each point.
+import requests, os, argparse
 
 def get_leg_distance(x, y):
 	""" make call to Google Distance API to get the distance between two lat/lon pairs
@@ -67,19 +65,28 @@ def find_shorter_reroute(A, B, C, D):
 
 
 def main():
-	"""parse command line arguments to get users lat/lon combinations"""
-	# parse with argparse
+	"""parse command line arguments to get user's lat/lon combinations"""
+	# TODO: argeparse to get a,b,c,d
+	parser = argparse.ArgumentParser(description="Find shortest re-route for 2 drivers")
+	# parser.add_argument('-h', '--help', help='enter 4 latitude,longitue pairs for the 4 points to be evaluated. no space after comma in pair')
+	parser.add_argument('-a', '--a', action='store', dest='A', help='enter the lat,lon of point A, start point of driver 1', required=True)
+	parser.add_argument('-b', '--b', action='store', dest='B', help='lat,lon of point B, end point of driver 1', required=True)
+	parser.add_argument('-c', '--c', action='store', dest='C', help='lat,lon of point C, start point of driver 2', required=True)
+	parser.add_argument('-d', '--d', action='store', dest='D', help='lat,lon of point D, end point of driver 2', required=True)
+	
+	parse_results = parser.parse_args()
+	
+	A = parse_results.A
+	B = parse_results.B
+	C = parse_results.C
+	D = parse_results.D
 
+	return find_shorter_reroute(A, B, C, D)
 	# testing home to antonia's and personalis to tacolicious
-	return find_shorter_reroute("37.4770169, -122.237806", "37.416566 -122.122387", "37.4759487, -122.1458561", "37.4433459, -122.1611703")
+	# return find_shorter_reroute("37.4770169, -122.237806", "37.416566 -122.122387", "37.4759487, -122.1458561", "37.4433459, -122.1611703")
+
+
 
 if __name__ == '__main__':
 	print main()
 
-"""
-calculate from A to B, A to C, C to D, D to B, C to A, B to D
-find which is shorter - A to B - (AC, CD, DB)
-or CD - (CA, AB, BD)
-
-response['routes'][0]['legs'][0]['distance']['value']
-"""
