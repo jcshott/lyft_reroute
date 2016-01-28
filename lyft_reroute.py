@@ -60,11 +60,11 @@ def find_shorter_reroute(A, B, C, D):
 	# get our dictionary of distances between the 4 points
 	distance_dict = setup_dictionary(A, B, C, D)
 
+	# calculate the re-routes
 	a_pickup_c = (distance_dict["ac"]["distance"] + distance_dict["cd"]["distance"] + distance_dict["db"]["distance"]) - distance_dict["ab"]["distance"]
-	print a_pickup_c
 	c_pickup_a = (distance_dict["ca"]["distance"] + distance_dict["ab"]["distance"] + distance_dict["bd"]["distance"]) - distance_dict["cd"]["distance"] 
-	print c_pickup_a
 
+	# evaluate differences and respond accordingly
 	if a_pickup_c == c_pickup_a:
 		return "It's the same distance for both re-routes!"
 	elif a_pickup_c < c_pickup_a:
