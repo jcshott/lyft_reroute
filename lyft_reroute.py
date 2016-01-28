@@ -1,4 +1,4 @@
-import requests, os, argparse
+import requests, os, argparse, sys
 
 def get_leg_distance(x, y):
 	""" make call to Google Distance API to get the distance between two lat/lon pairs
@@ -15,10 +15,18 @@ def get_leg_distance(x, y):
 	endpoint = 'https://maps.googleapis.com/maps/api/directions/json?'
 	response = requests.get(endpoint, params=query_params).json()
 	
-	return response['routes'][0]['legs'][0]['distance']['value']
+	try:
+		distance = response['routes'][0]['legs'][0]['distance']['value']
+		return distance
+	except Exception, e:
+		print "something went wrong with your points, please try again. you need to enter 4 valid lat,long pairs space seperated"
+		sys.exit()
 
 def setup_dictionary(a, b, c, d):
-	""" create our dictionary to hold the distances between points.
+	""" create our dictionary to hold the distances between points, so we can easily access each route leg.
+
+		Input: lat,lon of each point
+		Output: dictionary of the coordinate pairs that are needed to compare with the distances between each point logged as distance_dict[key]['distance']
 	"""
 	route_legs = [(a,b), (a, c), (c, d), (d, b), (c, a), (b, d)]
 	distance_dict =  {"ab": {"coord_pair": route_legs[0]},
@@ -42,10 +50,11 @@ def setup_dictionary(a, b, c, d):
 
 def find_shorter_reroute(A, B, C, D):
 	"""calculate the shortest reroute distance for 2 drivers starting at points A & C, travelling to B & D (respectively) if one were to pick up/drop off the other
+	Input: 4 lat,lon coordinates of the 4 points for the 2 drivers
 
-	shortest of:
-	driver 1 re-route: AB - (AC, CD, DB)
-	driver 2 re-route: CD - (CA, AB, BD)
+	Output: shortest re-route:
+	driver 1 re-route: (AC, CD, DB) - AB
+	driver 2 re-route: (CA, AB, BD) - CD
 	
 	"""
 	# get our dictionary of distances between the 4 points
@@ -67,7 +76,7 @@ def find_shorter_reroute(A, B, C, D):
 def main():
 	"""parse command line arguments to get user's lat/lon combinations"""
 
-	parser = argparse.ArgumentParser(description="Find shortest re-route for 2 drivers", usage='Add, in order (points A-D), in format latitude,longitude with space between each lat/long point')
+	parser = argparse.ArgumentParser(description="Find shortest re-route for 2 drivers", usage='Add command line args, in order (points A-D), in format latitude,longitude with space between each lat/long point (no spaces around comma btwn lat,long)')
 	
 	parser.add_argument('A', help='enter the lat,lon of point A, start point of driver 1')
 	parser.add_argument('B', help='lat,lon of point B, end point of driver 1')
@@ -82,11 +91,11 @@ def main():
 	D = parse_results.D
 
 	return find_shorter_reroute(A, B, C, D)
-	# testing home to antonia's and personalis to tacolicious
-	# return find_shorter_reroute("37.4770169, -122.237806", "37.416566 -122.122387", "37.4759487, -122.1458561", "37.4433459, -122.1611703")
-
 
 
 if __name__ == '__main__':
+	# use print main to print out the message of the returned shorter distance
 	print main()
+
+
 
