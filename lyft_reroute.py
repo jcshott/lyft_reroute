@@ -66,13 +66,13 @@ def find_shorter_reroute(A, B, C, D):
 
 def main():
 	"""parse command line arguments to get user's lat/lon combinations"""
-	# TODO: argeparse to get a,b,c,d
-	parser = argparse.ArgumentParser(description="Find shortest re-route for 2 drivers")
-	# parser.add_argument('-h', '--help', help='enter 4 latitude,longitue pairs for the 4 points to be evaluated. no space after comma in pair')
-	parser.add_argument('-a', '--a', action='store', dest='A', help='enter the lat,lon of point A, start point of driver 1', required=True)
-	parser.add_argument('-b', '--b', action='store', dest='B', help='lat,lon of point B, end point of driver 1', required=True)
-	parser.add_argument('-c', '--c', action='store', dest='C', help='lat,lon of point C, start point of driver 2', required=True)
-	parser.add_argument('-d', '--d', action='store', dest='D', help='lat,lon of point D, end point of driver 2', required=True)
+
+	parser = argparse.ArgumentParser(description="Find shortest re-route for 2 drivers", usage='Add, in order (points A-D), in format latitude,longitude with space between each lat/long point')
+	
+	parser.add_argument('A', help='enter the lat,lon of point A, start point of driver 1')
+	parser.add_argument('B', help='lat,lon of point B, end point of driver 1')
+	parser.add_argument('C', help='lat,lon of point C, start point of driver 2')
+	parser.add_argument('D', help='lat,lon of point D, end point of driver 2')
 	
 	parse_results = parser.parse_args()
 	
