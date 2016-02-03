@@ -64,6 +64,6 @@ $ python lyft_reroute.py 37.7839302,-122.4352607 37.7886376,-122.4136639 37.7955
 
 The program will output the driver who, if re-routed, will have the shortest re-route and how far that is by meters.  
 
-Driver 1 is considered to be going from point A -> B and Driver 2 is considered to be going from point C -> D
+Driver 1 is considered to be going from A -> B (1st lat/long pair to 2nd) and Driver 2 is considered to be going from point C -> D (3rd lat/long to 4th).
 
 If there is an error with one of your lat,long points when getting the distance, script will throw and error and exit (with a try/except)
