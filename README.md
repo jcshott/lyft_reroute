@@ -47,7 +47,7 @@ Don't forget to set your environment variable!
 $ source secrets.sh
 ```
 
-When you run the program, you need to supply the for latitude,longitude points in order A-B.  The individual lat/long are just as I wrote - comma seperated (no space) - and each point is seperated by a space as shown below:
+When you run the program, you need to supply the four latitude,longitude points in order A-B.  The individual lat/long are just as I wrote - comma seperated (no space) - and each point is space seperated, as shown below:
 
 ```sh
 $ python lyft_reroute.py lat,long lat,long lat,long lat,long
